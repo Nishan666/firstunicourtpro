@@ -1,0 +1,33 @@
+version: "3"
+services:
+  postgres_service:
+    image: postgres
+    container_name: nicks_postgress
+    ports:
+     - "5432:5432"
+    restart : always
+    environment:
+     POSTGRES_USER: postgres
+     POSTGRES_PASSWORD: admin
+     POSTGRES_DB: pythondata
+    volumes:
+     - .:/var/lib/postgres
+
+
+
+  python_service:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: nicks
+    container_name: nicks_python_scrapper
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres_service
+    command: python3 web.py
+
+
+
+
+
